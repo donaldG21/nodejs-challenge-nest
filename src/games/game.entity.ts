@@ -10,8 +10,8 @@ export class Game {
   name: string;
 
   @Column({ type: 'timestamptz' })
-  datePlayed: Date;
+  played_at: Date;
 
   @ManyToOne(() => Member, (member) => member.gamesPlayed)
-  player: Member;
+  member: Member;
 }

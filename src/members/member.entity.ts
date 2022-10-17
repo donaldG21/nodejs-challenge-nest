@@ -9,8 +9,8 @@ export class Member {
 
   @Column({ unique: true })
   @ApiProperty({ example: 'John', description: "Member's first name" })
-  first_name: string;
+  name: string;
 
-  @OneToMany(() => Game, (game) => game.player, { eager: true })
+  @OneToMany(() => Game, (game) => game.member, { eager: true })
   gamesPlayed: Game[];
 }
