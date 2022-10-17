@@ -7,7 +7,7 @@ export class Member {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   @ApiProperty({ example: 'John', description: "Member's first name" })
   first_name: string;
 
