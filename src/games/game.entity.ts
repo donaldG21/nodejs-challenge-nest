@@ -1,6 +1,11 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Member } from '../members/member.entity';
 
+/**
+ * Entity Schema for Games.
+ *
+ * @class
+ */
 @Entity()
 export class Game {
   @PrimaryGeneratedColumn()
