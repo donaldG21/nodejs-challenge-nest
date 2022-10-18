@@ -11,6 +11,10 @@ export class CreateGameDto {
   @ApiProperty()
   readonly name: string;
 
+  @IsString()
+  @ApiProperty()
+  readonly member: string;
+
   @IsDate()
   @ApiProperty()
   readonly played_at: Date;
