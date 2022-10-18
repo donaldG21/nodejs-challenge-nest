@@ -16,17 +16,39 @@ export class GamesService {
    * @constructs
    *
    * @param {Repository<Game>} gameRepository
+   * @param {MembersService} membersService
    */
   constructor(
     @InjectRepository(Game)
-    private gameRepository: Repository<Game>,
+    private readonly gameRepository: Repository<Game>,
+    private readonly membersService: MembersService,
   ) {}
 
   /**
    * Fetch all games from db
-   * @returns {Promise}
+   * @returns {Game[]}
    */
   findAll(): Promise<Game[]> {
     return this.gameRepository.find();
   }
+
+  /**
+   * Adds a new game-played record to the DB from JSON input
+   * @returns {Game}
+   */
+  async create(createGameDto: CreateGameDto): Promise<Game> {
+    const { name, member, played_at } = createGameDto;
+    const owner = await this.membersService.findOrCreate({ name: member });
+    const game = new Game();
+    game.name = name;
+    game.played_at = played_at;
+    game.member = owner;
+
+    return await this.gameRepository.save(game);
+  }
+
+  // ○ all streaks of days when more and more games were played than the day before
+  // (you can ignore days with no play). e.g. Member played 2 games on 03/02, 3
+  // games on 03/05, and 6 games on 03/06. That’s a streak.
+  // ○ for each month, which day of the month has members played the most games
 }

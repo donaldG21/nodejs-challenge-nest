@@ -20,12 +20,12 @@ export class GamesController {
    * @param {Object} createGameDto - game properties
    * @returns {Game}
    */
-  // @Post()
+  @Post()
   // @ApiOperation({ summary: 'summary goes here' })
   // @ApiResponse({ status: 200, description: 'description goes here', schema: { ...define schema here... } })
-  // create(@Body() createGameDto: CreateGameDto): Promise<Game> {
-  //   return this.gamesService.create(createGameDto);
-  // }
+  create(@Body() createGameDto: CreateGameDto): Promise<Game> {
+    return this.gamesService.create(createGameDto);
+  }
 
   // TODO
   // ○ all streaks of days when more and more games were played than the day before
