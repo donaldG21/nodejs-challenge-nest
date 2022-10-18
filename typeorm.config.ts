@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { Member } from './src/members/member.entity';
 import { Game } from './src/games/game.entity';
+import { CreateTables1666073431541 } from 'migrations/1666073431541-CreateTables';
 config();
 
 const configService = new ConfigService();
@@ -16,5 +17,5 @@ export default new DataSource({
   database: configService.get('POSTGRES_DB'),
   logging: true,
   entities: [Member, Game],
-  migrations: [],
+  migrations: [CreateTables1666073431541],
 });
