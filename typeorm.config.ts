@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
-import { Member } from 'src/members/member.entity';
-import { Game } from 'src/games/game.entity';
+import { Member } from './src/members/member.entity';
+import { Game } from './src/games/game.entity';
 config();
 
 const configService = new ConfigService();
