@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsString } from 'class-validator';
 
+/**
+ * Entity Schema for Games.
+ *
+ * @class
+ */
 export class CreateGameDto {
   @IsString()
   @ApiProperty()
