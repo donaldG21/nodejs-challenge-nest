@@ -1,7 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class CreateMemberDto {
+/**
+ * Entity Schema for Members.
+ *
+ * @class
+ */
+export class MemberDto {
   @IsString()
   @ApiProperty()
   readonly name: string;
