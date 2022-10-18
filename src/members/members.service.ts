@@ -11,25 +11,28 @@ export class MembersService {
     private memberRepository: Repository<Member>,
   ) {}
 
-  create(createMember: MemberDto): Promise<Member> {
+  create({ name }: MemberDto): Promise<Member> {
     const member = new Member();
-    member.name = createMember.name;
+    member.name = name;
 
     return this.memberRepository.save(member);
   }
 
+  /**
+   * Fetch all members from db
+   * @returns {Member[]}
+   */
   async findAll(): Promise<Member[]> {
     return this.memberRepository.find();
   }
 
-  async findOrCreate({ name }: MemberDto): Promise<Member> {
-    const member = await this.memberRepository.findOneBy({ name: name });
+  async findOrCreate(memberDto: MemberDto): Promise<Member> {
+    const member = await this.memberRepository.findOneBy({
+      name: memberDto.name,
+    });
 
     if (member) return member;
 
-    const createdMember = new Member();
-    createdMember.name = name;
-
-    return this.memberRepository.save(member);
+    return this.create(memberDto);
   }
 }
