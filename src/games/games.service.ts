@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MembersService } from 'src/members/members.service';
 import { Repository } from 'typeorm';
+import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './game.entity';
 
 /**
