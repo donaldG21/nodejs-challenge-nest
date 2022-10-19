@@ -7,7 +7,7 @@ import { GamesService } from './games.service';
 export class GamesController {
   constructor(private readonly gamesService: GamesService) {}
   /**
-   * List all games played data
+   * List all games played.
    * @returns {Game[]}
    */
   @Get()
@@ -16,20 +16,37 @@ export class GamesController {
   }
 
   /**
-   * Create Game
+   * Create game played.
    * @param {Object} createGameDto - game properties
    * @returns {Game}
    */
   @Post()
-  // @ApiOperation({ summary: 'summary goes here' })
-  // @ApiResponse({ status: 200, description: 'description goes here', schema: { ...define schema here... } })
   create(@Body() createGameDto: CreateGameDto): Promise<Game> {
     return this.gamesService.create(createGameDto);
   }
 
-  // TODO
-  // ○ all streaks of days when more and more games were played than the day before
-  // (you can ignore days with no play). e.g. Member played 2 games on 03/02, 3
-  // games on 03/05, and 6 games on 03/06. That’s a streak.
-  // ○ for each month, which day of the month has members played the most games
+  /**
+   * Get streaks of days games played
+   * when more games were played than the day before
+   * e.g. Member played 2 games on 03/02, 3 games on 03/05,
+   * and 6 games on 03/06. That’s a streak.
+   * @returns { Date[][] }
+   */
+  @Get('/streaks')
+  getStreaks(): Promise<Date[][]> {
+    // TODO
+    // return this.gamesService.getStreaks();
+    return new Promise((r) => r([[new Date(), new Date()]]));
+  }
+
+  /**
+   * Get day of most games played for each month
+   * @returns { Date[] }
+   */
+  @Get('/days-most-played')
+  getDaysMostPlayed(): Promise<Date[]> {
+    // TODO
+    // return this.gamesService.getDaysMostPlayed();
+    return new Promise((r) => r([new Date(), new Date()]));
+  }
 }
