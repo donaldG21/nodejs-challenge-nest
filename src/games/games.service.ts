@@ -31,7 +31,11 @@ export class GamesService {
    * @returns {Game[]}
    */
   findAll(): Promise<Game[]> {
-    return this.gameRepository.find();
+    return this.gameRepository.find({
+      relations: {
+        member: true,
+      },
+    });
   }
 
   /**

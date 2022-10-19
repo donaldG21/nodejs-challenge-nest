@@ -23,7 +23,11 @@ export class MembersService {
    * @returns {Member[]}
    */
   async findAll(): Promise<Member[]> {
-    return this.memberRepository.find();
+    return this.memberRepository.find({
+      relations: {
+        gamesPlayed: true,
+      },
+    });
   }
 
   async findOrCreate(memberDto: MemberDto): Promise<Member> {
