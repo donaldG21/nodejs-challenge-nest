@@ -16,6 +16,6 @@ export class Member {
   @ApiProperty({ example: 'John', description: "Member's first name" })
   name: string;
 
-  @OneToMany(() => Game, (game) => game.member, { eager: true })
+  @OneToMany(() => Game, (game) => game.member)
   gamesPlayed: Game[];
 }
