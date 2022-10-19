@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { Member } from '../members/member.entity';
 
 /**
@@ -7,6 +13,7 @@ import { Member } from '../members/member.entity';
  * @class
  */
 @Entity()
+@Unique(['name', 'played_at', 'member'])
 export class Game {
   @PrimaryGeneratedColumn()
   id: number;
