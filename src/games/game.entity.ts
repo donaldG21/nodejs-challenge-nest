@@ -25,5 +25,5 @@ export class Game {
   played_at: Date;
 
   @ManyToOne(() => Member, (member) => member.gamesPlayed)
-  member: Member;
+  member?: Member;
 }

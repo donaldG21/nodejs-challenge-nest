@@ -17,5 +17,5 @@ export class Member {
   name: string;
 
   @OneToMany(() => Game, (game) => game.member)
-  gamesPlayed: Game[];
+  gamesPlayed?: Game[];
 }
