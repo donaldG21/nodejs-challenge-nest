@@ -8,6 +8,7 @@ import {
   repositoryMockFactory,
 } from 'src/utils/testing-utils/mock-factory';
 import { Repository } from 'typeorm';
+import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './game.entity';
 import { GamesService } from './games.service';
 
@@ -39,22 +40,38 @@ describe('GamesService', () => {
     expect(service).toBeDefined();
   });
 
+  xit('should create a game', async () => {
+    const gameDto: CreateGameDto = {
+      name: 'Chess',
+      member: 'sandra',
+      played_at: new Date(),
+    };
+
+    const game: Game = await service.create(gameDto);
+    expect(game).toEqual(gameDto);
+  });
+
   it('should find all games', async () => {
     gameRepoMock.find.mockReturnValue(mockGames);
     const games: Game[] = await service.findAll();
-    expect(games).toHaveLength(2);
+    expect(games).toHaveLength(25);
   });
 
   it('should get day of month that most games were played', async () => {
     const expectedDays = [
-      '2015-01-01 00:00:00.000 -0500',
-      '2015-02-28 00:00:00.000 -0500',
-      '2015-03-01 00:00:00.000 -0500',
-      '2015-04-01 00:00:00.000 -0400',
-      '2015-05-01 00:00:00.000 -0400',
-    ].map((d) => new Date(d));
+      '1/7/2015',
+      '2/1/2015',
+      '3/1/2015',
+      '4/1/2015',
+      '5/1/2015',
+      '8/1/2015',
+    ];
 
-    const daysMostPlayed: Date[] = await service.getDaysMostPlayed();
+    gameRepoMock.find.mockReturnValue(
+      Promise.resolve(mockGames.sort((a, b) => +a.played_at - +b.played_at)),
+    );
+
+    const daysMostPlayed: string[] = await service.getDaysMostPlayed();
     expect(daysMostPlayed).toEqual(expectedDays);
   });
 });
