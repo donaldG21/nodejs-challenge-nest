@@ -47,4 +47,16 @@ describe('MembersService', () => {
     expect(createdMember.id).toEqual(expect.any(Number));
     expect(createdMember.name).toEqual(member.name);
   });
+
+  it('should get streaks of days games played', async () => {
+    const id = 1;
+    const expectedStreaks = [
+      '2015-02-28 00:00:00.000 -0500',
+      '2015-03-01 00:00:00.000 -0500',
+      '2015-04-01 00:00:00.000 -0400',
+    ].map((d) => new Date(d));
+
+    const streaks: Date[][] = await service.getStreaks(id);
+    expect(expectedStreaks).toEqual(streaks);
+  });
 });
