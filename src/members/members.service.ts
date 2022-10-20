@@ -39,4 +39,13 @@ export class MembersService {
 
     return this.create(memberDto);
   }
+
+  /**
+   * Get streaks of days games played for member.
+   * @param {string} id
+   * @returns {Date[][]}
+   */
+  async getStreaks(id: number): Promise<Date[][]> {
+    return new Promise((r) => r([[new Date(), new Date()]]));
+  }
 }
