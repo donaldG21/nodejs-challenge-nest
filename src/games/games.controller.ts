@@ -27,10 +27,10 @@ export class GamesController {
 
   /**
    * Get day of most games played for each month
-   * @returns {Date[]}
+   * @returns {string[]}
    */
   @Get('/days-most-played')
-  getDaysMostPlayed(): Promise<Date[]> {
+  getDaysMostPlayed(): Promise<string[]> {
     return this.gamesService.getDaysMostPlayed();
   }
 }

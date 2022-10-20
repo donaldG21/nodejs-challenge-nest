@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MembersService } from 'src/members/members.service';
+import { getDaysMostPlayed, splitByMonthsAndYear } from 'src/utils/date-utils';
 import { Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './game.entity';
@@ -55,9 +56,13 @@ export class GamesService {
 
   /**
    * Run DB query to get day of month that most games were played.
-   * @returns {Date[]}
+   * @returns {string[]}
    */
-  async getDaysMostPlayed(): Promise<Date[]> {
-    return new Promise((r) => r([new Date(), new Date()]));
+  async getDaysMostPlayed(): Promise<string[]> {
+    const gameDatesArray = await this.gameRepository
+      .find({ order: { played_at: 'ASC' } })
+      .then((games) => games.map((g) => g.played_at));
+    const split = splitByMonthsAndYear(gameDatesArray);
+    return Object.values(split).map((date) => getDaysMostPlayed(date));
   }
 }
