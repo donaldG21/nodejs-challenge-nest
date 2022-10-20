@@ -30,7 +30,7 @@ export class GamesController {
    * when more games were played than the day before
    * e.g. Member played 2 games on 03/02, 3 games on 03/05,
    * and 6 games on 03/06. That’s a streak.
-   * @returns { Date[][] }
+   * @returns {Date[][]}
    */
   @Get(':id/streaks')
   getStreaks(@Param('id') id: number): Promise<Date[][]> {
@@ -39,7 +39,7 @@ export class GamesController {
 
   /**
    * Get day of most games played for each month
-   * @returns { Date[] }
+   * @returns {Date[]}
    */
   @Get('/days-most-played')
   getDaysMostPlayed(): Promise<Date[]> {

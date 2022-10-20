@@ -55,8 +55,8 @@ export class GamesService {
 
   /**
    * Get streaks of days games played for member.
-   * @param { string } id
-   * @returns { Date[][] }
+   * @param {string} id
+   * @returns {Date[][]}
    */
   async getStreaks(id: number): Promise<Date[][]> {
     return new Promise((r) => r([[new Date(), new Date()]]));
@@ -64,7 +64,7 @@ export class GamesService {
 
   /**
    * Run DB query to get day of month that most games were played.
-   * @returns { Date[] }
+   * @returns {Date[]}
    */
   async getDaysMostPlayed(): Promise<Date[]> {
     return new Promise((r) => r([new Date(), new Date()]));
