@@ -6,6 +6,7 @@ import {
   repositoryMockFactory,
 } from 'src/utils/testing-utils/mock-factory';
 import { Repository } from 'typeorm';
+import { MemberDto } from './dto/member.dto';
 import { Member } from './member.entity';
 import { MembersService } from './members.service';
 
@@ -38,25 +39,22 @@ describe('MembersService', () => {
     expect(users).toHaveLength(3);
   });
 
-  it('should save a member', async () => {
-    const member = { name: 'alvin' };
-    repositoryMock.save.mockReturnValue({ id: 4, ...member });
+  it('should create a member', async () => {
+    const memberDto: MemberDto = { name: 'alvin' };
+    repositoryMock.save.mockReturnValue({ id: 4, ...memberDto });
 
-    const createdMember: Member = await service.create(member);
+    const createdMember: Member = await service.create(memberDto);
 
     expect(createdMember.id).toEqual(expect.any(Number));
-    expect(createdMember.name).toEqual(member.name);
+    expect(createdMember.name).toEqual(memberDto.name);
   });
 
-  it('should get streaks of days games played', async () => {
-    const id = 1;
-    const expectedStreaks = [
-      '2015-02-28 00:00:00.000 -0500',
-      '2015-03-01 00:00:00.000 -0500',
-      '2015-04-01 00:00:00.000 -0400',
-    ].map((d) => new Date(d));
+  it('should get streaks of days number of games incrementally played', async () => {
+    const expectedStreaks: string[][] = [['1/3/2015', '1/6/2015', '1/7/2015']];
+    const userId = 1;
+    repositoryMock.findOne.mockReturnValue(mockMembers[0]);
 
-    const streaks: Date[][] = await service.getStreaks(id);
+    const streaks: string[][] = await service.getStreaks(userId);
     expect(expectedStreaks).toEqual(streaks);
   });
 });
