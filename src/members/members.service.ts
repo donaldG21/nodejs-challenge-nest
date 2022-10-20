@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { getStreaksFromArray } from 'src/utils/date-utils';
 import { Repository } from 'typeorm';
 import { MemberDto } from './dto/member.dto';
 import { Member } from './member.entity';
@@ -43,9 +44,13 @@ export class MembersService {
   /**
    * Get streaks of days games played for member.
    * @param {string} id
-   * @returns {Date[][]}
+   * @returns {string[][]}
    */
-  async getStreaks(id: number): Promise<Date[][]> {
-    return new Promise((r) => r([[new Date(), new Date()]]));
+  async getStreaks(id: number): Promise<string[][] | []> {
+    const member = await this.memberRepository.findOne({
+      where: { id },
+      relations: { gamesPlayed: true },
+    });
+    return getStreaksFromArray(member.gamesPlayed.map((g) => g.played_at));
   }
 }

@@ -23,7 +23,7 @@ export class MembersController {
    * @returns {Date[][]}
    */
   @Get(':id/streaks')
-  getStreaks(@Param('id') id: number): Promise<Date[][]> {
+  getStreaks(@Param('id') id: number): Promise<string[][] | []> {
     return this.membersService.getStreaks(id);
   }
 }
