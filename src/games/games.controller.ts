@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './game.entity';
 import { GamesService } from './games.service';
@@ -32,11 +32,9 @@ export class GamesController {
    * and 6 games on 03/06. That’s a streak.
    * @returns { Date[][] }
    */
-  @Get('/streaks')
-  getStreaks(): Promise<Date[][]> {
-    // TODO
-    // return this.gamesService.getStreaks();
-    return new Promise((r) => r([[new Date(), new Date()]]));
+  @Get(':id/streaks')
+  getStreaks(@Param('id') id: number): Promise<Date[][]> {
+    return this.gamesService.getStreaks(id);
   }
 
   /**
