@@ -53,8 +53,21 @@ export class GamesService {
     return await this.gameRepository.save(game);
   }
 
-  // ○ all streaks of days when more and more games were played than the day before
-  // (you can ignore days with no play). e.g. Member played 2 games on 03/02, 3
-  // games on 03/05, and 6 games on 03/06. That’s a streak.
-  // ○ for each month, which day of the month has members played the most games
+  /**
+   * Get streaks of days games played for member.
+   * @param { string } id
+   * @returns { Date[][] }
+   */
+  async getStreaks(id: number): Promise<Date[][]> {
+    console.log(id);
+    return new Promise((r) => r([[new Date(), new Date()]]));
+  }
+
+  /**
+   * Run DB query to get day of month that most games were played.
+   * @returns { Date[] }
+   */
+  async getDaysMostPlayed(): Promise<Date[]> {
+    return new Promise((r) => r([new Date(), new Date()]));
+  }
 }
