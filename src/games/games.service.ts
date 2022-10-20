@@ -59,7 +59,6 @@ export class GamesService {
    * @returns { Date[][] }
    */
   async getStreaks(id: number): Promise<Date[][]> {
-    console.log(id);
     return new Promise((r) => r([[new Date(), new Date()]]));
   }
 

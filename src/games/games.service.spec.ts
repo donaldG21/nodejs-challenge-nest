@@ -14,7 +14,6 @@ import { GamesService } from './games.service';
 describe('GamesService', () => {
   let service: GamesService;
   let gameRepoMock: MockType<Repository<Game>>;
-  // let memberRepoMock: MockType<Repository<Member>>;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,7 +33,6 @@ describe('GamesService', () => {
 
     service = module.get<GamesService>(GamesService);
     gameRepoMock = module.get(getRepositoryToken(Game));
-    // memberRepoMock = module.get(getRepositoryToken(Member));
   });
 
   it('should be defined', () => {
@@ -45,5 +43,30 @@ describe('GamesService', () => {
     gameRepoMock.find.mockReturnValue(mockGames);
     const games: Game[] = await service.findAll();
     expect(games).toHaveLength(2);
+  });
+
+  it('should get streaks of days games played', async () => {
+    const id = 1;
+    const expectedStreaks = [
+      '2015-02-28 00:00:00.000 -0500',
+      '2015-03-01 00:00:00.000 -0500',
+      '2015-04-01 00:00:00.000 -0400',
+    ].map((d) => new Date(d));
+
+    const streaks: Date[][] = await service.getStreaks(id);
+    expect(expectedStreaks).toEqual(streaks);
+  });
+
+  it('should get day of month that most games were played', async () => {
+    const expectedDays = [
+      '2015-01-01 00:00:00.000 -0500',
+      '2015-02-28 00:00:00.000 -0500',
+      '2015-03-01 00:00:00.000 -0500',
+      '2015-04-01 00:00:00.000 -0400',
+      '2015-05-01 00:00:00.000 -0400',
+    ].map((d) => new Date(d));
+
+    const daysMostPlayed: Date[] = await service.getDaysMostPlayed();
+    expect(daysMostPlayed).toEqual(expectedDays);
   });
 });
