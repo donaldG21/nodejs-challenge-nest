@@ -43,8 +43,6 @@ export class GamesController {
    */
   @Get('/days-most-played')
   getDaysMostPlayed(): Promise<Date[]> {
-    // TODO
-    // return this.gamesService.getDaysMostPlayed();
-    return new Promise((r) => r([new Date(), new Date()]));
+    return this.gamesService.getDaysMostPlayed();
   }
 }
