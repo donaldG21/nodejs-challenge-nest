@@ -3,13 +3,23 @@
 ## Description
 JSON REST-style API that processes and exposes data about the kids club, its members, and games played.
 
-Built on top of
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Built on top of [Nest](https://github.com/nestjs/nest), a TypeScript framework starter repository.
 
-## Running the app
-
+## Installation
 Please have docker installed to run app with a single command.
 
+### Install [pnpm](https://pnpm.io/installation):
+
+ Using npm
+```bash
+$ npm install -g pnpm
+```
+Install dependencies
+```bash
+$ pnpm install
+```
+
+## Running the app
 ```bash
 # development
 $ docker-compose up -d
@@ -26,6 +36,6 @@ $ pnpm test
 
 ## Stay in touch
 
-- Author - [Donald Granados](https://linkedin/in/donaldgranados)
+- Author - [Donald Granados](https://linkedin.com/in/donaldgranados)
 - Github - https://github.com/donaldG21
 - Email  - donald.g@me.com
