@@ -27,6 +27,9 @@ $ docker-compose up -d
 
 This will launch two containers (the nest api app and postgres db instance) in the default local ports (3000 and 5432 respectively).
 
+## See it in Action
+Access the Swagger UI at http://localhost:3000
+
 ## Test
 
 ```bash
