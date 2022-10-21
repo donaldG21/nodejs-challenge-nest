@@ -7,7 +7,7 @@ import {
   MockType,
   repositoryMockFactory,
 } from 'src/utils/testing-utils/mock-factory';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './game.entity';
 import { GamesService } from './games.service';
@@ -40,15 +40,22 @@ describe('GamesService', () => {
     expect(service).toBeDefined();
   });
 
-  xit('should create a game', async () => {
+  it('should create a game', async () => {
     const gameDto: CreateGameDto = {
       name: 'Chess',
       member: 'sandra',
       played_at: new Date(),
     };
 
+    const createdGame: DeepPartial<Game> = {
+      ...gameDto,
+      member: {
+        name: 'sandra',
+      },
+    };
+
     const game: Game = await service.create(gameDto);
-    expect(game).toEqual(gameDto);
+    expect(game).toEqual(createdGame);
   });
 
   it('should find all games', async () => {
