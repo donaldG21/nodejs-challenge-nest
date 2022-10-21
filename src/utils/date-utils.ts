@@ -1,11 +1,13 @@
+const formatDate = (d: Date): string => {
+  return `${d.getUTCMonth() + 1}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
+};
+
 export function getStreaksFromArray(arrayOfDates: Date[]): string[][] | [] {
   const results = [];
   let gamesPlayedDayBeforeCount = 0;
 
   const mappedStreaks = arrayOfDates.reduce((map, date) => {
-    const curDate = `${
-      date.getUTCMonth() + 1
-    }/${date.getUTCDate()}/${date.getUTCFullYear()}`;
+    const curDate = formatDate(date);
     map[curDate] = map[curDate] + 1 || 1;
     return map;
   }, new Map());
@@ -41,14 +43,10 @@ export function getDaysMostPlayed(dates: Date[]) {
   function mode(array: Date[]) {
     if (array.length == 0) return null;
     const modeMap = {};
-    let maxEl = `${
-        array[0].getUTCMonth() + 1
-      }/${array[0].getUTCDate()}/${array[0].getUTCFullYear()}`,
+    let maxEl = formatDate(array[0]),
       maxCount = 1;
     for (let i = 0; i < array.length; i++) {
-      const el = `${array[i].getUTCMonth() + 1}/${array[
-        i
-      ].getUTCDate()}/${array[i].getUTCFullYear()}`;
+      const el = formatDate(array[i]);
       if (modeMap[el] == null) modeMap[el] = 1;
       else modeMap[el]++;
       if (modeMap[el] > maxCount) {
