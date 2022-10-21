@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { DAY_MOST_PLAYED_PER_MONTH } from 'src/database/queries/day-most-played-per-month';
 import { MembersService } from 'src/members/members.service';
 import { getDaysMostPlayed, splitByMonthsAndYear } from 'src/utils/date-utils';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './game.entity';
 
@@ -22,6 +23,8 @@ export class GamesService {
    * @param {MembersService} membersService
    */
   constructor(
+    @InjectEntityManager()
+    private readonly entityManager: EntityManager,
     @InjectRepository(Game)
     private readonly gameRepository: Repository<Game>,
     private readonly membersService: MembersService,
@@ -58,7 +61,12 @@ export class GamesService {
    * Run DB query to get day of month that most games were played.
    * @returns {string[]}
    */
-  async getDaysMostPlayed(): Promise<string[]> {
+  async getDaysMostPlayed(useDbQuery = true): Promise<string[]> {
+    if (useDbQuery)
+      return await this.entityManager
+        .query(DAY_MOST_PLAYED_PER_MONTH)
+        .then((res) => res.map((r: any) => r.date));
+
     const gameDatesArray = await this.gameRepository
       .find({ order: { played_at: 'ASC' } })
       .then((games) => games.map((g) => g.played_at));

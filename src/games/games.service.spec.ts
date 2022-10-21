@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { getEntityManagerToken, getRepositoryToken } from '@nestjs/typeorm';
 import { Member } from 'src/members/member.entity';
 import { MembersService } from 'src/members/members.service';
 import { mockGames } from 'src/utils/mocks/mock-games';
 import {
+  entityManagerMockFactory,
   MockType,
   repositoryMockFactory,
 } from 'src/utils/testing-utils/mock-factory';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, EntityManager, Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './game.entity';
 import { GamesService } from './games.service';
@@ -15,6 +16,7 @@ import { GamesService } from './games.service';
 describe('GamesService', () => {
   let service: GamesService;
   let gameRepoMock: MockType<Repository<Game>>;
+  let managerMock: MockType<EntityManager>;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,11 +31,16 @@ describe('GamesService', () => {
           provide: getRepositoryToken(Member),
           useFactory: repositoryMockFactory,
         },
+        {
+          provide: getEntityManagerToken(),
+          useFactory: entityManagerMockFactory,
+        },
       ],
     }).compile();
 
     service = module.get<GamesService>(GamesService);
     gameRepoMock = module.get(getRepositoryToken(Game));
+    managerMock = module.get(getEntityManagerToken());
   });
 
   it('should be defined', () => {
@@ -64,7 +71,7 @@ describe('GamesService', () => {
     expect(games).toHaveLength(25);
   });
 
-  it('should get day of month that most games were played', async () => {
+  describe('get day of month that most games were played', () => {
     const expectedDays = [
       '1/7/2015',
       '2/1/2015',
@@ -74,11 +81,29 @@ describe('GamesService', () => {
       '8/1/2015',
     ];
 
-    gameRepoMock.find.mockReturnValue(
-      Promise.resolve(mockGames.sort((a, b) => +a.played_at - +b.played_at)),
-    );
+    it('should be calculated programmatically', async () => {
+      gameRepoMock.find.mockReturnValue(
+        Promise.resolve(mockGames.sort((a, b) => +a.played_at - +b.played_at)),
+      );
 
-    const daysMostPlayed: string[] = await service.getDaysMostPlayed();
-    expect(daysMostPlayed).toEqual(expectedDays);
+      const daysMostPlayed: string[] = await service.getDaysMostPlayed(false);
+      expect(daysMostPlayed).toEqual(expectedDays);
+    });
+
+    it('should queried from the database', async () => {
+      const databaseResponse = [
+        { date: '1/7/2015', month: '1/2015' },
+        { date: '2/1/2015', month: '1/2015' },
+        { date: '3/1/2015', month: '1/2015' },
+        { date: '4/1/2015', month: '1/2015' },
+        { date: '5/1/2015', month: '1/2015' },
+        { date: '8/1/2015', month: '1/2015' },
+      ];
+
+      managerMock.query.mockReturnValue(Promise.resolve(databaseResponse));
+
+      const daysMostPlayed: string[] = await service.getDaysMostPlayed();
+      expect(daysMostPlayed).toEqual(expectedDays);
+    });
   });
 });
