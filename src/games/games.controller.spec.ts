@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { getEntityManagerToken, getRepositoryToken } from '@nestjs/typeorm';
 import { Member } from 'src/members/member.entity';
 import { MembersService } from 'src/members/members.service';
+import { entityManagerMockFactory } from 'src/utils/testing-utils/mock-factory';
 import { Game } from './game.entity';
 import { GamesController } from './games.controller';
 import { GamesService } from './games.service';
@@ -22,6 +23,10 @@ describe('GamesController', () => {
         {
           provide: getRepositoryToken(Member),
           useValue: jest.fn(),
+        },
+        {
+          provide: getEntityManagerToken(),
+          useFactory: entityManagerMockFactory,
         },
       ],
     }).compile();
