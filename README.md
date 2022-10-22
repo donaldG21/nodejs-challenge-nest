@@ -35,6 +35,9 @@ Access the Swagger UI at http://localhost:3000
 ```bash
 # unit tests
 $ pnpm test
+
+# test coverage
+$ pnpm test:cov
 ```
 
 ## Stay in touch
