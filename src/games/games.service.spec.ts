@@ -90,7 +90,7 @@ describe('GamesService', () => {
       expect(daysMostPlayed).toEqual(expectedDays);
     });
 
-    it('should queried from the database', async () => {
+    it('should be queried from the database', async () => {
       const databaseResponse = [
         { date: '1/7/2015', month: '1/2015' },
         { date: '2/1/2015', month: '1/2015' },

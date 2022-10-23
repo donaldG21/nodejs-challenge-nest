@@ -33,7 +33,7 @@ export function getStreaksFromArray(arrayOfDates: Date[]): string[][] | [] {
   return results;
 }
 
-// Optimize algorithm to get max by month in one loop vs two.
+// Clean up and optimize algorithm to get max by month in one loop vs two.
 export function getDayMostPlayedByMonth(dates: Date[]) {
   // loop over dates
   return Object.values(
@@ -48,11 +48,7 @@ export function getDayMostPlayedByMonth(dates: Date[]) {
 
       // set max on month
       const max = map[key].max;
-      map[key].max = max
-        ? map[key][max] < map[key][day]
-          ? day
-          : max
-        : day;
+      map[key].max = max ? (map[key][max] < map[key][day] ? day : max) : day;
 
       return map;
     }, new Map()),
