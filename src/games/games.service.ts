@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { DAY_MOST_PLAYED_PER_MONTH } from 'src/database/queries/day-most-played-per-month';
 import { MembersService } from 'src/members/members.service';
-import { getDaysMostPlayed, splitByMonthsAndYear } from 'src/utils/date-utils';
+import { getDayMostPlayedByMonth } from 'src/utils/date-utils';
 import { EntityManager, Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { Game } from './game.entity';
@@ -70,7 +70,6 @@ export class GamesService {
     const gameDatesArray = await this.gameRepository
       .find({ order: { played_at: 'ASC' } })
       .then((games) => games.map((g) => g.played_at));
-    const split = splitByMonthsAndYear(gameDatesArray);
-    return Object.values(split).map((date) => getDaysMostPlayed(date));
+    return getDayMostPlayedByMonth(gameDatesArray);
   }
 }

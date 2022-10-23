@@ -71,7 +71,7 @@ describe('GamesService', () => {
     expect(games).toHaveLength(25);
   });
 
-  describe('get day of month that most games were played', () => {
+  describe('day of month that most games were played', () => {
     const expectedDays = [
       '1/7/2015',
       '2/1/2015',

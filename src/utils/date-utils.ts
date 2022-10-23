@@ -2,6 +2,10 @@ const formatDate = (d: Date): string => {
   return `${d.getUTCMonth() + 1}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
 };
 
+const monthYear = (d: Date): string => {
+  return `${d.getUTCMonth() + 1}/${d.getUTCFullYear()}`;
+};
+
 export function getStreaksFromArray(arrayOfDates: Date[]): string[][] | [] {
   const results = [];
   let gamesPlayedDayBeforeCount = 0;
@@ -29,31 +33,29 @@ export function getStreaksFromArray(arrayOfDates: Date[]): string[][] | [] {
   return results;
 }
 
-export function splitByMonthsAndYear(dates: Date[]) {
-  return dates.reduce((map, date) => {
-    const key = `${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`;
-    (!(key in map) && (map[key] = [date])) || map[key].push(date);
-    return map;
-  }, new Map());
-}
+// Optimize algorithm to get max by month in one loop vs two.
+export function getDayMostPlayedByMonth(dates: Date[]) {
+  // loop over dates
+  return Object.values(
+    dates.reduce((map, date) => {
+      // get monthYear and date keys
+      const key = monthYear(date);
+      const day = formatDate(date);
+      // create monthYear key if does not exists
+      (!(key in map) && (map[key] = { [day]: 1 })) ||
+        // create or add one occurrence to date[day] count
+        (map[key][day] = map[key][day] ? map[key][day] + 1 : 1);
 
-export function getDaysMostPlayed(dates: Date[]) {
-  return mode(dates);
+      // set max on month
+      const max = map[key].max;
+      map[key].max = max
+        ? map[key][max] < map[key][day]
+          ? day
+          : max
+        : day;
 
-  function mode(array: Date[]) {
-    if (array.length == 0) return null;
-    const modeMap = {};
-    let maxEl = formatDate(array[0]),
-      maxCount = 1;
-    for (let i = 0; i < array.length; i++) {
-      const el = formatDate(array[i]);
-      if (modeMap[el] == null) modeMap[el] = 1;
-      else modeMap[el]++;
-      if (modeMap[el] > maxCount) {
-        maxEl = el;
-        maxCount = modeMap[el];
-      }
-    }
-    return maxEl;
-  }
+      return map;
+    }, new Map()),
+    // extract max for each month
+  ).map((v) => v.max);
 }
