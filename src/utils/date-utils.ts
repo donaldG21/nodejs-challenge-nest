@@ -7,29 +7,29 @@ const monthYear = (d: Date): string => {
 };
 
 export function getStreaksFromArray(arrayOfDates: Date[]): string[][] | [] {
-  const results = [];
+  const results: string[][] = [];
   let gamesPlayedDayBeforeCount = 0;
 
   const mappedStreaks = arrayOfDates.reduce((map, date) => {
     const curDate = formatDate(date);
-    map[curDate] = map[curDate] + 1 || 1;
+    map.set(curDate, map.get(curDate) + 1 || 1);
     return map;
   }, new Map());
 
-  const reduced = Object.keys(mappedStreaks).reduce((acc, val) => {
-    if (mappedStreaks[val] > gamesPlayedDayBeforeCount) {
-      acc.push(val);
-      gamesPlayedDayBeforeCount = mappedStreaks[val];
+  let acc: string[] = [];
+  for (const key of mappedStreaks.keys()) {
+    if (mappedStreaks.get(key) > gamesPlayedDayBeforeCount) {
+      acc.push(key);
+      gamesPlayedDayBeforeCount = mappedStreaks.get(key);
     } else {
       if (acc.length > 1) results.push(acc);
-      gamesPlayedDayBeforeCount = mappedStreaks[val];
-      acc = [val];
+      gamesPlayedDayBeforeCount = mappedStreaks.get(key);
+      acc = [key];
     }
+  }
 
-    return acc;
-  }, []);
+  if (acc.length > 1) results.push(acc);
 
-  if (results.length > 1) results.push(reduced);
   return results;
 }
 
