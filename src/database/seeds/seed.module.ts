@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
-import { MembersModule } from './members/members.module';
-import { GamesModule } from './games/games.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GamesModule } from 'src/games/games.module';
+import { GamesSeedService } from './games-seed.service';
 
+/**
+ * Import and provide seeder classes.
+ * TODO:
+ * Refactor configuration to make it resusable.
+ *
+ * @module
+ */
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -14,10 +21,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [__dirname + '/**/*.entity.{js,ts}'],
+      entities: [__dirname + '/../../**/*.entity.{js,ts}'],
     }),
-    MembersModule,
     GamesModule,
   ],
+  providers: [GamesSeedService],
 })
-export class AppModule {}
+export class SeederModule {}
